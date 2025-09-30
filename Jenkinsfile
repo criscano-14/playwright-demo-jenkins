@@ -8,14 +8,6 @@ pipeline {
         stage('Run Playwright Tests') {
             steps { bat 'npm run test' } 
         }
-        stage('Publish Allure Report') {
-            steps { 
-                allure([
-                    includeProperties: false,
-                    results: [[path: 'allure-results']]
-                ])
-            }
-        }
     }
 
     post {
