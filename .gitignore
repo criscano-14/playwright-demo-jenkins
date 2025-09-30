@@ -1,0 +1,40 @@
+# Node.js dependencies
+node_modules/
+
+# npm / yarn logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Playwright test results and reports
+test-results/
+allure-results/
+allure-report/
+playwright-report/
+/playwright/.cache/
+videos/
+screenshots/
+
+# Environment / secret files
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+dist/
+build/
+
+# IDE / editor files
+.vscode/
+.idea/
+*.iml
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Optional: lock files (if you want them ignored, usually keep package-lock.json)
+# package-lock.json
+# yarn.lock
+
+filesToUpload/
