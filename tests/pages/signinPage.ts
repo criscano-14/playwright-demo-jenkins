@@ -6,6 +6,7 @@ export class SignInPage extends BasePage{
     private readonly passwordTextBox:Locator;
     private readonly signInButton:Locator;
     private readonly forgotPasswordLink:Locator;
+    private readonly invalidCredentialsText:Locator;
 
     constructor(page:Page){
         super(page);
@@ -13,6 +14,7 @@ export class SignInPage extends BasePage{
         this.passwordTextBox = page.getByRole('textbox', { name: 'Password' });
         this.signInButton = page.getByRole('button', { name: 'Login' });
         this.forgotPasswordLink = page.getByText('Forgot your password?');
+        this.invalidCredentialsText = page.getByText('Invalid credentials');
     }
 
     async isForgotPasswordLinkVisible():Promise<boolean>{
@@ -26,8 +28,18 @@ export class SignInPage extends BasePage{
     async enterPassword(password:string){
         await this.fillFormField(this.passwordTextBox,password);
     }
+
+    async isInvalidCredentialsTextVisible():Promise<boolean>{
+        return this.isElementVisible(this.invalidCredentialsText);
+    }
     
     async clickSignInButton(){
         await this.clickElement(this.signInButton);
+    }
+
+    async loginToApplication(emailId:string,password:string){
+        await this.enterEmailId(emailId);
+        await this.enterPassword(password);
+        await this.clickSignInButton();
     }
 }

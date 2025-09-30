@@ -1,15 +1,18 @@
 import { Locator, Page } from "@playwright/test";
 
-export default class BasePage{
-    readonly page:Page;
+export default class BasePage {
+    readonly page: Page;
 
-    constructor(page:Page){
+    constructor(page: Page) {
         this.page = page;
     }
 
     // Common method to navigate to a URL
     async navigateTo(url: string) {
-        await this.page.goto(url);
+        await this.page.goto(`https://opensource-demo.orangehrmlive.com/web/index.php/auth/${url}`, {
+            waitUntil: 'networkidle',
+            timeout: 15000,
+        });
     }
 
     // Common method to click an element

@@ -1,48 +1,27 @@
-import {test as baseTest} from '@playwright/test';
-import {LandingPage} from '../tests/pages/landingPage';
-import {HomePage} from '../tests/pages/homePage';
-import {SignInPage} from '../tests/pages/signinPage';
-import {SettingsPage} from '../tests/pages/settingsPage';
-import { HeaderPage } from '../tests/pages/headerPage';
+import { test as baseTest } from '@playwright/test';
+import { SignInPage } from '../tests/pages/signinPage';
+import { DashboardPage } from '../tests/pages/dashboardPage';
+import loginData from '../tests/testData/orangeHRMCredentials.json';
 import { allure } from 'allure-playwright';
 
-type pages = {
-    landingPage: LandingPage,
-    homePage: HomePage,
+type Pages = {
     signinPage: SignInPage,
-    settingsPage: SettingsPage,
-    headerPage: HeaderPage
+    dashboardPage: DashboardPage,
+    login: boolean
 }
 
-const testPages = baseTest.extend<pages>({
-    landingPage: async({page}, use)=>{
-        await use(new LandingPage(page));
-    },
-    homePage: async({page}, use)=>{
-        await use(new HomePage(page));
-    },
-    signinPage: async({page}, use)=>{
+export const test = baseTest.extend<Pages>({
+    signinPage: async ({ page }, use) => {
         await use(new SignInPage(page));
     },
-    headerPage: async({page}, use)=>{
-        await use(new HeaderPage(page));
+    login: async ({ signinPage }, use) => {
+        await signinPage.navigateTo('login');
+        await signinPage.loginToApplication(loginData[0].username, loginData[0].password);
+        await use(true);
     },
-    settingsPage: async({page}, use)=>{
-        await use(new SettingsPage(page));
-    }
+    dashboardPage: async ({ page, login }, use) => {
+        await use(new DashboardPage(page));
+    },
 })
 
-testPages.afterEach(async ({ page }, testInfo) => {
-  if (testInfo.status !== testInfo.expectedStatus) {
-    // Screenshot
-    const screenshot = await page.screenshot();
-    allure.attachment('Screenshot', screenshot, 'image/png');
-
-    // Page source
-    const html = await page.content();
-    allure.attachment('Page Source', html, 'text/html');
-  }
-});
-
-export const test = testPages;
-export const expect = testPages.expect;
+export const expect = baseTest.expect;

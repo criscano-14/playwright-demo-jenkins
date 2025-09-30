@@ -8,20 +8,24 @@ pipeline {
         stage('Run Playwright Tests') {
             steps { bat 'npm run test' } 
         }
+        stage('Publish Allure Report') {
+            steps {
+                echo 'Publishing Allure report via plugin...'
+                allure([
+                    includeProperties: false,
+                    jdk: '',
+                    results: [[path: 'allure-results']]
+                ])
+            }
+        }
     }
 
     post {
     always {
         // Publish HTML report from allure-report folder
-        publishHTML([ 
-            reportDir: 'allure-report',
-            reportFiles: 'index.html',
-            reportName: 'HTML Report',
-            allowMissing: true,
-            alwaysLinkToLastBuild: true,
-            keepAll: true
-        ])
+        echo 'Tests finished. Check Allure report.'
     }
+
 
     failure {
         echo 'Tests failed! Build marked RED.'
@@ -30,5 +34,5 @@ pipeline {
     success {
         echo 'All tests passed! Build marked GREEN.'
     }
-}
+    }
 }
