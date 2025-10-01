@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/pomFixtures';
 import postData from '../testData/testData.json';
 
 
-test.only('Create a new post', async ({ page, buzzPage }) => {
+test('Create a new post', async ({ page, buzzPage }) => {
 
     const postResponsePromise = page.waitForResponse(response =>
         response.url().includes('/api/v2/buzz/posts') && response.request().method() === 'POST'

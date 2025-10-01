@@ -9,6 +9,10 @@ COPY package*.json ./
 # Install dependencies
 RUN npm ci
 
+#Permissions for Allure results and report folders
+RUN mkdir -p /app/allure-report /app/allure-results \
+  && chown -R node:node /app/allure-report /app/allure-results
+
 # Install Playwright browsers + system deps automatically
 RUN npx playwright install --with-deps
 
