@@ -4,5 +4,6 @@ services:
     build: .
     container_name: playwright-container
     volumes:
-      - ./:/app
-    command: npm run test
+      - - ./:/app
+      - ./allure-results:/app/allure-results
+      - ./allure-report:/app/allure-report

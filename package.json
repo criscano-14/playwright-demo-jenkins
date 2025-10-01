@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "clean:reports": "rimraf allure-report allure-results && mkdirp allure-report allure-results",
+    "clean:reports": "rimraf allure-report/* allure-results/*",
     "generate:reports": "npx allure generate allure-results --clean -o allure-report",
     "open:reports": "npx allure open ./allure-report",
-    "pretest": ".\\node_modules\\.bin\\playwright.cmd install --force && npm run clean:reports",
+    "pretest": "npm run clean:reports",
     "execute:script": "npx playwright test  --project=chromium",
-    "test": "npm run execute:script || npm run generate:reports"
+    "test": "npm run execute:script; npm run generate:reports"
   },
   "keywords": [],
   "author": "",
