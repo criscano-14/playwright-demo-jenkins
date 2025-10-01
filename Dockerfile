@@ -9,6 +9,9 @@ RUN apt-get update && \
     apt-get install -y openjdk-17-jdk && \
     rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /app/allure-report /app/allure-results && \
+    chmod -R 777 /app/allure-report /app/allure-results
+
 # Set JAVA_HOME for Allure CLI
 ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH:$PATH"
