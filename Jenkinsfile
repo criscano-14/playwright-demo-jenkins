@@ -5,7 +5,7 @@ pipeline {
         stage('Run Playwright Tests') {
             steps {
                 echo 'Running Playwright tests in Docker container...'
-                sh 'docker-compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from tests'
+                bat 'docker-compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from tests'
             }
         }
 
