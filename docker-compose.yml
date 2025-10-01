@@ -4,5 +4,9 @@ services:
     build: .
     container_name: playwright-container
     volumes:
-      - ./allure-results:/app/allure-results
-      - ./allure-report:/app/allure-report
+      - allure-results:/app/allure-results
+      - allure-report:/app/allure-report
+
+volumes:
+  allure-results:
+  allure-report:

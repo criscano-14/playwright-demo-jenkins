@@ -9,6 +9,15 @@ pipeline {
             }
         }
 
+        stage('Copy Allure Reports') {
+            steps {
+                echo 'Copying Allure reports from container to Jenkins workspace...'
+                // Copy from Docker volumes to workspace
+                bat 'docker run --rm -v allure-results:/data/results -v %CD%\\allure-results:/host/results alpine sh -c "cp -r /data/results/* /host/results/"'
+                bat 'docker run --rm -v allure-report:/data/report -v %CD%\\allure-report:/host/report alpine sh -c "cp -r /data/report/* /host/report/"'
+            }
+        }
+
         stage('Publish Allure Report') {
             steps {
                 echo 'Publishing Allure report via plugin...'
@@ -23,8 +32,8 @@ pipeline {
 
     post {
         always {
-            // Publish HTML report from allure-report folder
-            echo 'Tests finished. Check Allure report.'
+            echo 'Cleaning up Docker containers...'
+            bat 'docker-compose -f docker-compose.yml down --volumes --remove-orphans'
         }
 
         failure {
