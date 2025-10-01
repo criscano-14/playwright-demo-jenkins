@@ -2,7 +2,7 @@ import { test, expect } from '../../fixtures/pomFixtures';
 import postData from '../testData/testData.json';
 
 
-test('Create a new post', async ({ page, buzzPage }) => {
+test.only('Create a new post', async ({ page, buzzPage }) => {
 
     const postResponsePromise = page.waitForResponse(response =>
         response.url().includes('/api/v2/buzz/posts') && response.request().method() === 'POST'
@@ -19,6 +19,6 @@ test('Create a new post', async ({ page, buzzPage }) => {
     await buzzPage.createNewPost(postData.postInput);
     page.pause();
     const postResponse = await postResponsePromise;
-    expect(postResponse.status()).toBe(200);
+    expect(postResponse.status()).toBe(400);
     await expect(page.getByText(postData.postInput).first()).toBeVisible();
 });

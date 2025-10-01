@@ -1,75 +1,32 @@
-# -------------------------------
-# Custom Dockerfile for Playwright + Allure
-# -------------------------------
-
+# Base image
 FROM node:20-bullseye
 
-# # Set the working directory inside the container
+# Set working directory
 WORKDIR /app
- 
-# # Copy your application code into the container
-COPY . /app
 
-# Install OS dependencies + Java (for Allure) + Playwright dependencies
-RUN apt-get update && apt-get install -y \
-    openjdk-11-jre-headless \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    libgbm1 \
-    libpango-1.0-0 \
-    libasound2 \
-    curl \
-    wget \
-    unzip \
-    && rm -rf /var/lib/apt/lists/* \
-    npm install
+# Install Java 17 for Allure
+RUN apt-get update && \
+    apt-get install -y openjdk-17-jdk && \
+    rm -rf /var/lib/apt/lists/*
 
-# Copy package files and install dependencies
-# COPY package*.json ./
-# RUN npm install
+# Set JAVA_HOME for Allure CLI
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH:$PATH"
 
-# # # Set the working directory inside the container
-# WORKDIR /app
- 
-# # # Copy your application code into the container
-# COPY . /app
+# Copy package.json and package-lock.json first (for caching)
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci
 
 # Install Playwright browsers
-RUN npx playwright install --force --with-deps
+RUN npx playwright install --with-deps
 
-# Install Allure CLI globally
-RUN npm install -g allure-commandline --save-dev
+# Copy the rest of the app
+COPY . .
 
-# Expose test-results folder
-VOLUME ["/app/allure-results", "/app/allure-report"]
+# Make scripts executable if needed
+RUN chmod +x ./scripts/run-tests.sh
 
-# Default command: run tests and generate Allure reports
-CMD npm run test
-
-
-# # Use the Playwright image as the base image
-# FROM mcr.microsoft.com/playwright:v1.55.0-noble
- 
-# # Set the working directory inside the container
-# WORKDIR /app
- 
-# # Copy your application code into the container
-# COPY . /app
- 
-# # Install Java and other dependencies
-# RUN apt-get update && \
-#     apt-get install -y openjdk-11-jre-headless && \
-#     npm install
- 
-# # Set environment variables or additional configuration if needed
-# ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
- 
-# # Command to run your Playwright tests
-# CMD ["npm", "test"]
+# Default command to run tests
+CMD ["npm", "run", "test"]
