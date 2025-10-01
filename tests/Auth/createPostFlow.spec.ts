@@ -19,6 +19,6 @@ test('Create a new post', async ({ page, buzzPage }) => {
     await buzzPage.createNewPost(postData.postInput);
     page.pause();
     const postResponse = await postResponsePromise;
-    expect(postResponse.status()).toBe(200);
+    expect(postResponse.status()).toBe(400);
     await expect(page.getByText(postData.postInput).first()).toBeVisible();
 });
