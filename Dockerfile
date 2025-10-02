@@ -4,7 +4,7 @@ FROM node:20-bullseye
 WORKDIR /app
 
 # Copy only package files first (better layer caching)
-COPY package*.json ./
+COPY package*.json ./app
 
 # Install dependencies
 RUN npm install
