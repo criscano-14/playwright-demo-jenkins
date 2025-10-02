@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docker:local": "docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test && docker cp playwright-container:/app/allure-report ./allure-report && docker cp playwright-container:/app/allure-results ./allure-results",
     "clean:reports": "rm -rf  allure-results/*",
     "generate:reports": "npx allure generate allure-results --clean -o allure-report",
     "open:reports": "npx allure open ./allure-report",

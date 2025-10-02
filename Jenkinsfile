@@ -2,20 +2,11 @@ pipeline {
     agent any
 
     stages {
-        stage('Build Docker Image') {
-            steps {
-                    // Forzar reconstrucción sin cache
-                bat 'docker-compose -f docker-compose.yml build --no-cache'
-                
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                    // Ejecutar los contenedores y usar el exit code del contenedor de test
-                bat 'docker-compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from playwright-test'
-                
-            }
+        steps {
+            bat 'docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test'
+            // Extract reports after container finished
+            bat 'docker cp playwright-container:/app/allure-report ./allure-report'
+            bat 'docker cp playwright-container:/app/allure-results ./allure-results'
         }
     }
 
