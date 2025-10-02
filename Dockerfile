@@ -4,7 +4,7 @@ FROM node:20-bullseye
 WORKDIR /app
 
 # Copy only package files first (better layer caching)
-COPY package*.json ./app
+COPY package*.json /app
 
 # Install dependencies
 RUN npm install
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the rest of the app
-COPY . ./app
+COPY . /app
 
 # Default command
 CMD ["npm", "run", "test"]
