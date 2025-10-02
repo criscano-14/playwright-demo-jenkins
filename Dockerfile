@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy the rest of the app
-COPY . .
+COPY . ./app
 
 # Default command
 CMD ["npm", "run", "test"]
