@@ -2,13 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                cleanWs()
-                checkout scm
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 dir('Playwright-demo-JenkinsFile') {
