@@ -6,7 +6,7 @@ services:
     user: root
     container_name: playwright-container
     volumes:
-      - ./:/app/
+      - ./:/app
 
     command: npm run test
 
