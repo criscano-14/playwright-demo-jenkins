@@ -1,13 +1,16 @@
 version: '3.8'
 
+volumes:
+  allure-report:
+  allure-results:
 services:
   playwright-test:
     build: .
     user: root
     container_name: playwright-container
     volumes:
-      - ./allure-report:/app/allure-report
-      - ./allure-results:/app/allure-results
+      - allure-report:/app/allure-report
+      - allure-results:/app/allure-results
 
     command: npm run test
 

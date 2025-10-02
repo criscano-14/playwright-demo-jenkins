@@ -3,6 +3,13 @@ pipeline {
 
     stages {
 
+        stage('Clean Reports') {
+        steps {
+            bat 'rmdir /s /q allure-report'
+            bat 'rmdir /s /q allure-results'
+        }
+    }
+
         stage('Build Docker Image') {
             steps {
                     // Forzar reconstrucción sin cache
