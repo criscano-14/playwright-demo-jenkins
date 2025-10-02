@@ -12,6 +12,7 @@ pipeline {
             steps {
                 echo 'Running Playwright tests in Docker container...'
                 // Windows uses bat
+                cleanWs()
                 bat 'docker-compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from playwright-test'
             }
         }
