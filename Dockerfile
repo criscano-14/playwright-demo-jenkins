@@ -28,10 +28,12 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     unzip \
-    && rm -rf /var/lib/apt/lists/* \
-    npm install
+    && rm -rf /var/lib/apt/lists/* 
+    
+# Set environment variables or additional configuration if needed
+ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
-# Copy package files and install dependencies
+# # Copy package files and install dependencies
 # COPY package*.json ./
 # RUN npm install
 
@@ -42,13 +44,14 @@ RUN apt-get update && apt-get install -y \
 # COPY . /app
 
 # Install Playwright browsers
-RUN npx playwright install --force --with-deps
+RUN npm install\
+    && npx playwright install --force --with-deps
 
 # Install Allure CLI globally
 RUN npm install -g allure-commandline --save-dev
 
 # Expose test-results folder
-VOLUME ["/app/allure-results", "/app/allure-report"]
+# VOLUME ["/app/allure-results", "/app/allure-report"]
 
 # Default command: run tests and generate Allure reports
 CMD npm run test
