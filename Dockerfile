@@ -24,9 +24,6 @@ RUN apt-get update && apt-get install -y \
 # Copy the rest of the app
 COPY . .
 
-# Expose results/report folders
-VOLUME ["/app/allure-results", "/app/allure-report"]
-
 # Default command
 CMD ["npm", "run", "test"]
 
