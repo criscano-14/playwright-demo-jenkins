@@ -3,10 +3,12 @@ pipeline {
 
     stages {
         stage('Run Tests') {
-            bat 'docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test'
-            // Extract reports after container finished
-            bat 'docker cp playwright-container:/app/allure-report ./allure-report'
-            bat 'docker cp playwright-container:/app/allure-results ./allure-results'
+            steps {
+                bat 'docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test'
+                // Extract reports after container finished
+                bat 'docker cp playwright-container:/app/allure-report ./allure-report'
+                bat 'docker cp playwright-container:/app/allure-results ./allure-results'
+            }
         }
     }
 
