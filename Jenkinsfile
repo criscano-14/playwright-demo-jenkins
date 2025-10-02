@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Running Playwright tests in Docker container...'
                 // Windows uses bat
-                bat 'docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test'
+                bat 'docker-compose -f docker-compose.yml up --build --no-cache --abort-on-container-exit --exit-code-from playwright-test'
             }
         }
     }
