@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies
-RUN npm ci
+RUN npm install
 
 #Permissions for Allure results and report folders
 RUN mkdir -p /app/allure-report /app/allure-results \
