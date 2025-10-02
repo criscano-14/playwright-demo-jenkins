@@ -9,11 +9,21 @@ pipeline {
             }
         }
 
-        stage('Run Playwright Tests') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Running Playwright tests in Docker container...'
-                // Windows uses bat
-                bat 'docker-compose -f docker-compose.yml up --build --no-cache --abort-on-container-exit --exit-code-from playwright-test'
+                dir('Playwright-demo-JenkinsFile') {
+                    // Forzar reconstrucción sin cache
+                    bat 'docker-compose -f docker-compose.yml build --no-cache'
+                }
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                dir('Playwright-demo-JenkinsFile') {
+                    // Ejecutar los contenedores y usar el exit code del contenedor de test
+                    bat 'docker-compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from playwright-test'
+                }
             }
         }
     }
