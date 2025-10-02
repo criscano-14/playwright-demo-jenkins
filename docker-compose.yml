@@ -9,7 +9,7 @@ services:
     user: root
     container_name: playwright-container
     volumes:
-      - allure-report:/app/allure-report
+      - ./allure-report:/app/allure-report
       - allure-results:/app/allure-results
 
     command: npm run test
