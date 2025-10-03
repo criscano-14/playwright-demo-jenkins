@@ -51,6 +51,7 @@ jobs:
   # Nuevo job para publicar el informe en GitHub Pages.
   deploy:
     runs-on: ubuntu-latest  # Usar Ubuntu
+    needs: build
 
     steps:
       - name: Checkout code
