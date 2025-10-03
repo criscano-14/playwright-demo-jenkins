@@ -31,9 +31,8 @@ jobs:
       # Paso 4: Extraer los informes de Allure después de que el contenedor termine
       - name: Copy Allure reports from volume
         run: |
-          docker cp playwright-container:/app/allure-report ./allure-history/allure-report
-          docker cp playwright-container:/app/allure-results ./allure-history/allure-results
-
+          docker cp playwright-container:/app/allure-report ./allure-report
+          docker cp playwright-container:/app/allure-results ./allure-results
 
 
       # Paso 5: Limpiar los contenedores Docker
@@ -61,7 +60,7 @@ jobs:
       with:
         gh_pages: gh-pages
         allure_history: allure-history
-        allure_results: ./allure-history/allure-results
+        allure_results: ./allure-results
 
     - name: Publish test report
       uses: peaceiris/actions-gh-pages@v3
