@@ -1,0 +1,5 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","9637","navigation with left menu","chromium","Fri Oct 03 14:30:32 UTC 2025","passed","Fri Oct 03 14:30:41 UTC 2025","","Auth/navigationWithLeftMenuFlow.spec.ts","",""
+"","10495","Test login valid credentials","chromium","Fri Oct 03 14:30:41 UTC 2025","passed","Fri Oct 03 14:30:52 UTC 2025","Login Logout Flow","NoAuth/LoginLogoutFlow.spec.ts","",""
+"","6187","Test login invalid credentials - Displays invalid credentials message","chromium","Fri Oct 03 14:30:42 UTC 2025","passed","Fri Oct 03 14:30:48 UTC 2025","Login Logout Flow","NoAuth/LoginLogoutFlow.spec.ts","",""
+"","9899","Create a new post","chromium","Fri Oct 03 14:30:32 UTC 2025","passed","Fri Oct 03 14:30:42 UTC 2025","","Auth/createPostFlow.spec.ts","",""
