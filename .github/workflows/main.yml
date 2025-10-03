@@ -1,0 +1,44 @@
+name: CI/CD with Docker and Allure
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # El agente de ejecución es Ubuntu
+
+    steps:
+      # Paso 1: Hacer checkout del código
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Paso 2: Configurar Docker
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Paso 3: Construir la imagen Docker
+      - name: Build Docker image
+        run: |
+          docker build -t my-app .
+
+      # Paso 4: Ejecutar pruebas dentro del contenedor Docker
+      - name: Run tests in Docker container
+        run: |
+          docker run --rm my-app npm test  # Ejecuta los tests dentro del contenedor Docker
+
+      # Paso 5: Generar el reporte de Allure
+      - name: Generate Allure report
+        run: |
+          docker run --rm my-app allure generate ./allure-results --clean
+
+      # Paso 6: Subir los resultados de Allure como artefacto
+      - name: Upload Allure Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: allure-report
+          path: ./allure-report
