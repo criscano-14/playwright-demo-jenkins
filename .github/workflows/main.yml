@@ -26,7 +26,7 @@ jobs:
       # Paso 3: Ejecutar pruebas en contenedor Docker
       - name: Run tests with Docker Compose
         run: |
-          docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test
+          docker-compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from playwright-test
 
       # Paso 4: Extraer los informes de Allure después de que el contenedor termine
       - name: Copy Allure reports from volume
