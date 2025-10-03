@@ -34,11 +34,20 @@ jobs:
           docker cp playwright-container:/app/allure-report ./allure-report
           docker cp playwright-container:/app/allure-results ./allure-results
 
-
       # Paso 5: Limpiar los contenedores Docker
       - name: Clean up Docker containers
         run: |
           docker-compose -f docker-compose.yml down --volumes --remove-orphans
+
+
+      # Paso 6: Subir reporte como artifact
+      - name: Upload Allure Report as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: ./allure-report
+
+
 
   # Nuevo job para visualizar el reporte de Allure
   show_allure_report:
@@ -46,26 +55,17 @@ jobs:
     needs: build  # Este job necesita que el job `build` haya terminado correctamente
 
     steps:
-    - name: Load test report history
-      uses: actions/checkout@v3
-      if: always()
-      continue-on-error: true
-      with:
-        ref: gh-pages
-        path: gh-pages
+      # Paso 1: Descargar el artifact con el reporte de Allure
+      - name: Download Allure Report artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: allure-report
+          path: ./allure-report
 
-    - name: Build test report
-      uses: simple-elf/allure-report-action@v1.7
-      if: always()
-      with:
-        gh_pages: gh-pages
-        allure_history: allure-history
-        allure_results: allure-results
-
-    - name: Publish test report
-      uses: peaceiris/actions-gh-pages@v3
-      if: always()
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_branch: gh-pages
-        publish_dir: allure-history
+      # Paso 2: (Opcional) Publicar el reporte a GitHub Pages
+      - name: Publish Allure Report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./allure-report
