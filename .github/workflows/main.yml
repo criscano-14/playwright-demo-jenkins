@@ -42,7 +42,7 @@ jobs:
 
       # Paso 6: Subir reporte como artifact
       - name: Upload Allure Report as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: ./allure-report
@@ -57,7 +57,7 @@ jobs:
     steps:
       # Paso 1: Descargar el artifact con el reporte de Allure
       - name: Download Allure Report artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: allure-report
           path: ./allure-report
