@@ -64,7 +64,7 @@ jobs:
       with:
         publish_dir: ./allure-report  # Carpeta con el informe de Allure
         publish_branch: gh-pages  # Publicar en la rama gh-pages
-        github_token: ${{ secrets.GITHUB_TOKEN }}  # Usar el token de GitHub para autenticación
+        github_token: ${{ secrets.GH_TOKEN }}  # Usar el token de GitHub para autenticación
 
     # Paso 3: Configurar git y realizar commit y push a la rama gh-pages
     - name: Push Allure Report to GitHub Pages
