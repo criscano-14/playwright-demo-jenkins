@@ -29,10 +29,11 @@ jobs:
           docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test
 
       # Paso 4: Extraer los informes de Allure después de que el contenedor termine
-      - name: Extract Allure reports from container
+      - name: Copy Allure reports from volume
         run: |
-          docker cp playwright-container:/app/allure-report ./allure-report
-          docker cp playwright-container:/app/allure-results ./allure-results
+          cp -r /var/lib/docker/volumes/allure-report/_data /home/runner/work/playwright-demo-jenkins/playwright-demo-jenkins/allure-report
+          cp -r /var/lib/docker/volumes/allure-results/_data /home/runner/work/playwright-demo-jenkins/playwright-demo-jenkins/allure-results
+
 
       # Paso 5: Limpiar los contenedores Docker
       - name: Clean up Docker containers
