@@ -47,17 +47,26 @@ jobs:
           name: allure-report
           path: ./allure-report
 
-  # Este trabajo es para mostrar el reporte de Allure en GitHub Actions (opcional)
-  allure-report:
-    needs: build
-    runs-on: ubuntu-latest
+
+  # Nuevo job para publicar el informe en GitHub Pages
+  deploy:
+    runs-on: ubuntu-latest  # Usar Ubuntu
 
     steps:
-      - name: Download Allure report artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: allure-report
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Show Allure report (optional)
+      - name: Set up GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          # Establece la ruta donde quieres que se publique el informe de Allure
+          folder: ./allure-report  # Carpeta con el informe de Allure
+          target_branch: gh-pages  # Publicar en la rama gh-pages
+
+      - name: Push Allure Report to GitHub Pages
         run: |
-          echo "Allure report is ready."
+          git config --global user.email "youremail@example.com"
+          git config --global user.name "Your Name"
+          git add -A
+          git commit -m "Publish Allure Report"
+          git push origin gh-pages
