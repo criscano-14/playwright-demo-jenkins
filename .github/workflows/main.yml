@@ -1,44 +1,62 @@
-name: CI/CD with Docker and Allure
+name: CI/CD Pipeline with Docker and Playwright
 
 on:
   push:
     branches:
-      - main
+      - main  # Ejecutar en push hacia la rama main
   pull_request:
     branches:
-      - main
+      - main  # Ejecutar en pull request hacia la rama main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # El agente de ejecución es Ubuntu
+    runs-on: ubuntu-latest  # Usar una máquina con Ubuntu para ejecutar el pipeline
 
     steps:
       # Paso 1: Hacer checkout del código
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Paso 2: Configurar Docker
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
-
-      # Paso 3: Construir la imagen Docker
-      - name: Build Docker image
+      # Paso 2: Configurar Docker y Docker Compose
+      - name: Set up Docker Compose
         run: |
-          docker build -t my-app .
+          sudo apt-get update
+          sudo apt-get install -y docker-compose  # Instalar Docker Compose
 
-      # Paso 4: Ejecutar pruebas dentro del contenedor Docker
-      - name: Run tests in Docker container
+      # Paso 3: Ejecutar pruebas en contenedor Docker
+      - name: Run tests with Docker Compose
         run: |
-          docker run --rm my-app npm test  # Ejecuta los tests dentro del contenedor Docker
+          docker-compose -f docker-compose.yml up --build --abort-on-container-exit --exit-code-from playwright-test
 
-      # Paso 5: Generar el reporte de Allure
-      - name: Generate Allure report
+      # Paso 4: Extraer los informes de Allure después de que el contenedor termine
+      - name: Extract Allure reports from container
         run: |
-          docker run --rm my-app allure generate ./allure-results --clean
+          docker cp playwright-container:/app/allure-report ./allure-report
+          docker cp playwright-container:/app/allure-results ./allure-results
 
-      # Paso 6: Subir los resultados de Allure como artefacto
-      - name: Upload Allure Report
+      # Paso 5: Limpiar los contenedores Docker
+      - name: Clean up Docker containers
+        run: |
+          docker-compose -f docker-compose.yml down --volumes --remove-orphans
+
+      # Paso 6: Publicar el informe de Allure
+      - name: Publish Allure report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: ./allure-report
+
+  # Este trabajo es para mostrar el reporte de Allure en GitHub Actions (opcional)
+  allure-report:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Allure report artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-report
+
+      - name: Show Allure report (optional)
+        run: |
+          echo "Allure report is ready."
