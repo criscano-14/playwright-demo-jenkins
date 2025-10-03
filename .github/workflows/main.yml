@@ -38,7 +38,7 @@ jobs:
 
       # Paso 6: Subir los resultados de Allure como artefacto
       - name: Upload Allure Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: allure-report
           path: ./allure-report
