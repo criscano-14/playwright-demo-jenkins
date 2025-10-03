@@ -54,20 +54,23 @@ jobs:
     needs: build
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    # Paso 1: Checkout del código
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          # Establece la ruta donde quieres que se publique el informe de Allure
-          folder: ./allure-report  # Carpeta con el informe de Allure
-          target_branch: gh-pages  # Publicar en la rama gh-pages
+    # Paso 2: Subir los informes de Allure a GitHub Pages
+    - name: Set up GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        publish_dir: ./allure-report  # Carpeta con el informe de Allure
+        publish_branch: gh-pages  # Publicar en la rama gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # Usar el token de GitHub para autenticación
 
-      - name: Push Allure Report to GitHub Pages
-        run: |
-          git config --global user.email "youremail@example.com"
-          git config --global user.name "Your Name"
-          git add -A
-          git commit -m "Publish Allure Report"
-          git push origin gh-pages
+    # Paso 3: Configurar git y realizar commit y push a la rama gh-pages
+    - name: Push Allure Report to GitHub Pages
+      run: |
+        git config --global user.email "youremail@example.com"
+        git config --global user.name "Your Name"
+        git add -A
+        git commit -m "Publish Allure Report"
+        git push origin gh-pages  # Hacer push a la rama gh-pages
